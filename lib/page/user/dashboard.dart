@@ -22,7 +22,7 @@ class DashboardUser extends StatefulWidget {
 class _DashboardUserState extends State<DashboardUser> {
   final articleList = FirebaseFirestore.instance.collection('article').snapshots();
 
-  late List<Album> listAlbum = []; // Initialize as an empty list
+  late List<Album> listAlbum = []; 
 
   Repository repository = Repository();
 
@@ -30,11 +30,10 @@ class _DashboardUserState extends State<DashboardUser> {
   void initState() {
     super.initState();
     getData();
-    // Auto-refresh every 30 seconds
-    // Timer.periodic(Duration(seconds: 1), (Timer t) => );
+    Timer.periodic(Duration(seconds: 30), (Timer t) => getData());
   }
 
-  getData() async {
+  Future<void> getData() async {
     listAlbum = await repository.getData();
     setState(() {});
   }
