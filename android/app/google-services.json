@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "222740310716",
+    "project_id": "nyoba-fbs",
+    "storage_bucket": "nyoba-fbs.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:222740310716:android:26fc370bf20ef68c783eb9",
+        "android_client_info": {
+          "package_name": "com.kelompok7b.projek_pbm"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "222740310716-pg1knslmfkrkc8t17hq3k78uj7ai10ii.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDZSt1e7m8xTtB3epzi-1ZpE3rn4eKHZ_0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "222740310716-pg1knslmfkrkc8t17hq3k78uj7ai10ii.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
