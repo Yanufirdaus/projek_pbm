@@ -9,7 +9,7 @@ import 'package:projek_pbm/page/user/changepw.dart';
 
 
 class SeeArticlePage extends StatefulWidget {
-  const SeeArticlePage({ super.key });
+  const SeeArticlePage({ super.key, required, required String judula, required String contenta, required String gambara  });
 
   @override
   State<SeeArticlePage> createState() => _SeeArticlePageState();
@@ -17,20 +17,6 @@ class SeeArticlePage extends StatefulWidget {
 
 String dropdownValue = 'User';
 class _SeeArticlePageState extends State<SeeArticlePage> {
-  final tabs = [
-      SeeArticlePage(),
-      DashboardUser(),
-      SignupPage(role: role,),
-      ChangePw()
-  ];
-
-  int _selectedNavbar = 0;
-  
-  void _changeSelectedNavBar(int index) {
-    setState(() {
-      _selectedNavbar = index;
-    });
-  }
   
   @override
   Widget build(BuildContext context) {
@@ -92,71 +78,40 @@ class _SeeArticlePageState extends State<SeeArticlePage> {
                                     )
                                   ),
 
-                                  Container(
+                                  Column(children: [
+                                    Container(
+                                      padding: EdgeInsets.fromLTRB(40, 30, 40, 30),
+                                      alignment: Alignment.center,
+                                      child:
+                                        Text(judul.toUpperCase(), textAlign: TextAlign.justify, style: TextStyle(color: Color.fromARGB(255, 234, 231, 177),fontSize: screenWidth*0.036, fontWeight: FontWeight.w900))
+                                    ),
+                                    Container(
+                                      width: screenHeight*0.3,
+                                      padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
+                                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(500)),
+                                      child: AspectRatio(
+                                        aspectRatio: 487 / 310,
+                                            child: new Container(
+                                              decoration: new BoxDecoration(
+                                                borderRadius: BorderRadius.circular(10),
+                                                image: new DecorationImage(
+                                                  fit: BoxFit.fitWidth,
+                                                  alignment: FractionalOffset.topCenter,
+                                                  image: new NetworkImage(gambara),
+                                                )
+                                              ),
+                                            ),
+                                          ),
+                                    ),
+                                    Container(
                                     padding: EdgeInsets.fromLTRB(40, 30, 40, 30),
                                     alignment: Alignment.center,
-                                    child: Text('''Lorem ipsum dolor sit amet, 
-consectetur adipisicing elit, sed do 
-eiusmod tempor incididunt ut labore et 
-dolore magna aliqua. Ut enim ad minim veniam, 
-quis nostrud exercitation ullamco 
-laboris nisi ut aliquip ex ea commodo consequat. 
-Duis aute irure dolor in reprehenderit in voluptate 
-velit esse cillum dolore eu fugiat nulla pariatur. 
-Excepteur sint occaecat cupidatat non proident, 
-sunt in culpa qui officia deserunt mollit 
-consectetur adipisicing elit, sed do 
-eiusmod tempor incididunt ut labore et 
-dolore magna aliqua. Ut enim ad minim veniam, 
-quis nostrud exercitation ullamco 
-laboris nisi ut aliquip ex ea commodo consequat. 
-Duis aute irure dolor in reprehenderit in voluptate 
-velit esse cillum dolore eu fugiat nulla pariatur. 
-Excepteur sint occaecat cupidatat non proident, 
-sunt in culpa qui officia deserunt mollit 
-consectetur adipisicing elit, sed do 
-eiusmod tempor incididunt ut labore et 
-dolore magna aliqua. Ut enim ad minim veniam, 
-quis nostrud exercitation ullamco 
-laboris nisi ut aliquip ex ea commodo consequat. 
-Duis aute irure dolor in reprehenderit in voluptate 
-velit esse cillum dolore eu fugiat nulla pariatur. 
-Excepteur sint occaecat cupidatat non proident, 
-sunt in culpa qui officia deserunt mollit 
-consectetur adipisicing elit, sed do 
-eiusmod tempor incididunt ut labore et 
-dolore magna aliqua. Ut enim ad minim veniam, 
-quis nostrud exercitation ullamco 
-laboris nisi ut aliquip ex ea commodo consequat. 
-Duis aute irure dolor in reprehenderit in voluptate 
-velit esse cillum dolore eu fugiat nulla pariatur. 
-Excepteur sint occaecat cupidatat non proident, 
-sunt in culpa qui officia deserunt mollit 
-consectetur adipisicing elit, sed do 
-eiusmod tempor incididunt ut labore et 
-dolore magna aliqua. Ut enim ad minim veniam, 
-quis nostrud exercitation ullamco 
-laboris nisi ut aliquip ex ea commodo consequat. 
-Duis aute irure dolor in reprehenderit in voluptate 
-velit esse cillum dolore eu fugiat nulla pariatur. 
-Excepteur sint occaecat cupidatat non proident, 
-sunt in culpa qui officia deserunt mollit 
-consectetur adipisicing elit, sed do 
-eiusmod tempor incididunt ut labore et 
-dolore magna aliqua. Ut enim ad minim veniam, 
-quis nostrud exercitation ullamco 
-laboris nisi ut aliquip ex ea commodo consequat. 
-Duis aute irure dolor in reprehenderit in voluptate 
-velit esse cillum dolore eu fugiat nulla pariatur. 
-Excepteur sint occaecat cupidatat non proident, 
-sunt in culpa qui officia deserunt mollit 
-anim id est laborum''', style: TextStyle(color: Color.fromARGB(255, 234, 231, 177),fontSize: screenWidth*0.035),),
-                                  ),
+                                    child: Text(content, textAlign: TextAlign.justify ,style: TextStyle(color: Color.fromARGB(255, 234, 231, 177),fontSize: screenWidth*0.035),),
+                                  )]),
                                 ],
                               ),
                                 ),
                             )
-                              
                       ),
                   )
               ),

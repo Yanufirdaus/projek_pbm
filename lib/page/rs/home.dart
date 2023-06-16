@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:projek_pbm/page/rs/dashboardrs.dart';
+import 'package:projek_pbm/page/rs/profilers.dart';
 import 'package:projek_pbm/page/user/changepw.dart';
 import 'package:projek_pbm/page/user/dashboard.dart';
+import 'package:projek_pbm/page/user/home.dart';
 import 'package:projek_pbm/page/user/login.dart';
 import 'package:projek_pbm/page/user/pwdetail.dart';
 import 'package:projek_pbm/page/user/signup.dart';
 import 'package:projek_pbm/page/user/profile.dart';
 
+
+int selectednavbars = 0;
+
 class HomeRs extends StatefulWidget {
-  const HomeRs({ super.key });
+  const HomeRs({ super.key, required String emailp, required String name, required String uid, required String imager, required String alamatrsk, required String nomeres, required Map<String, dynamic> jambuka, required Map<String, dynamic> jamtutup, required Map<String, dynamic> layananrusk });
   @override
   State<HomeRs> createState() => _HomeRsState();
 }
@@ -16,16 +22,25 @@ class HomeRs extends StatefulWidget {
 
 class _HomeRsState extends State<HomeRs>{
 
-  int _selectedNavbar = 0;
   final tabs = [
-    Text('ini halaman Rumah sakit ya cuy'),
-    SignupPage(role: role,),
-    ProfileUser()
+    DashboardRs(rsnames: name),
+    ProfileRS(
+              imagerusak: imager,
+              uidrusak : uidp,
+              namerusak : name, 
+              emailrusak : emailp, 
+              alamatrusak: alamatr,
+              nomerrusak: nomerrs,
+              jambukarusak: jambuka,
+              jamtutuprusak: jamtutup,
+              layananrusak: layananrusk,
+              selectednavbars: selectednavbars
+            )
   ];
 
   void _changeSelectedNavBar(int index) {
     setState(() {
-      _selectedNavbar = index;
+      selectednavbars = index;
     });
   }
 
@@ -36,7 +51,7 @@ class _HomeRsState extends State<HomeRs>{
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 246, 241, 233),
 
-      body : tabs[_selectedNavbar],
+      body : tabs[selectednavbars],
 
       bottomNavigationBar: 
         Padding(padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
@@ -64,16 +79,16 @@ class _HomeRsState extends State<HomeRs>{
                             icon: Icon(Icons.home),
                             label: 'Home',
                           ),
-                          BottomNavigationBarItem(
-                            icon: Icon(Icons.assignment),
-                            label: 'Pesanan',
-                          ),
+                          // BottomNavigationBarItem(
+                          //   icon: Icon(Icons.assignment),
+                          //   label: 'Pesanan',
+                          // ),
                           BottomNavigationBarItem(
                             icon: Icon(Icons.person),
                             label: 'Akun',
                           ),
                         ],
-                        currentIndex: _selectedNavbar,
+                        currentIndex: selectednavbars,
                         selectedFontSize: screenHeight*0.016,
                         unselectedFontSize: screenHeight*0.014,
                         selectedItemColor: Color.fromARGB(255, 198, 255, 154),

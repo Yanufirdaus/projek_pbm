@@ -1,10 +1,32 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:projek_pbm/page/rs/home.dart';
 import 'package:projek_pbm/page/user/changepw.dart';
 import 'package:projek_pbm/page/user/home.dart';
 import 'package:projek_pbm/page/user/signup.dart';
+
+String name = "";
+String emailp = "";
+String nik = "";
+String alamat = "";
+String tempatL = "";
+String tanggalL = "";
+String gender = "";
+String goldar = "";
+String age = "";
+String uidp ="";
+String imagep ="";
+
+String imager ="";
+String alamatr = "";
+String nomerrs = "";
+Map<String, dynamic> jambuka = {};
+Map<String, dynamic> jamtutup = {};
+Map<String, dynamic> layananrusk = {};
+
+
 
 class LoginPage extends StatefulWidget {
   const LoginPage({ super.key });
@@ -17,6 +39,7 @@ class _LoginPageState extends State<LoginPage>{
   // const LoginPage({super.key});
 
   // bool showProgress = false;
+  bool isLoading = false;
   
   bool visible = false;
 
@@ -183,21 +206,16 @@ class _LoginPageState extends State<LoginPage>{
                       ),
                     ),
                     onPressed:(){
-                      setState(() {
-                        visible = true;
-                      });
                       signIn(
                           emailController.text, passwordController.text);
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(
-                        //       builder: (context) => HomeUser(), 
-                        //     ),
-                        // );
-                        // print(email);
                         
                     },
-                    child: Text("Login", style:TextStyle(color: Color.fromARGB(255, 60, 98, 85), fontWeight: FontWeight.w900))
+                    child: isLoading? 
+                        LoadingAnimationWidget.staggeredDotsWave(
+                          color: Color.fromARGB(255, 60, 98, 85),
+                          size: screenHeight*0.04,
+                        ) :
+                        Text("Login", style:TextStyle(color: Color.fromARGB(255, 60, 98, 85), fontWeight: FontWeight.w900))
                 ),
             ),
 
@@ -235,30 +253,75 @@ class _LoginPageState extends State<LoginPage>{
   void route() {
     User? user = FirebaseAuth.instance.currentUser;
     var kk = FirebaseFirestore.instance.collection('user').doc(user!.uid).get().then((DocumentSnapshot documentSnapshot) {
-      if (documentSnapshot.exists) {
+      // if (documentSnapshot.exists) {
         if (documentSnapshot.get('role') == "User") {
-           Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) =>  HomeUser(),
-          ),
-        );
-        }else{
+          uidp = user.uid;
+          imagep = documentSnapshot.get('ProfileImage');
+          name = documentSnapshot.get('names');
+          emailp = documentSnapshot.get('email');
+          nik = documentSnapshot.get('nik');
+          alamat = documentSnapshot.get('alamat');
+          tempatL = documentSnapshot.get('tempatL');
+          tanggalL = documentSnapshot.get('tanggalL');
+          gender = documentSnapshot.get('gender');
+          goldar = documentSnapshot.get('goldar');
+          age = documentSnapshot.get('usia');
           Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => HomeRs(),
-          ),
-        );
+            context,
+            MaterialPageRoute(
+              builder: (context) =>  HomeUser( 
+                imagep: imagep,
+                uid : uidp,
+                name : name, 
+                emailp : emailp, 
+                nik : nik,
+                alamat : alamat,
+                tempatL : tempatL,
+                tanggalL : tanggalL,
+                gender : gender,
+                goldar : goldar,
+                age : age,
+              ),
+            ),
+          );
+
+          // debugPrint(uid);
+        }else{
+          uidp = user.uid;
+          name = documentSnapshot.get('names');
+          emailp = documentSnapshot.get('email');
+          imager = documentSnapshot.get('gambar');
+          alamatr = documentSnapshot.get('alamat');
+          nomerrs = documentSnapshot.get('no_telp');
+          jambuka = documentSnapshot.get('jam_buka');
+          jamtutup = documentSnapshot.get('jam_tutup');
+          layananrusk = documentSnapshot.get('layanan');
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => HomeRs(
+                imager: imager,
+                uid : uidp,
+                name : name, 
+                emailp : emailp, 
+                alamatrsk: alamatr,
+                nomeres: nomerrs,
+                jambuka: jambuka,
+                jamtutup: jamtutup,
+                layananrusk: layananrusk
+              ),
+            ),
+          );
+        debugPrint(name);
         }
-      } else {
-        print('Document does not exist on the database');
-      }
     });
   }
 
   void signIn(String email, String password) async {
     if (_formkey.currentState!.validate()) {
+       setState(() {
+        isLoading = true; 
+      });
       try {
         UserCredential userCredential =
             await FirebaseAuth.instance.signInWithEmailAndPassword(
@@ -269,10 +332,19 @@ class _LoginPageState extends State<LoginPage>{
       } on FirebaseAuthException catch (e) {
         if (e.code == 'user-not-found') {
           print('No user found for that email.');
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('email yang anda masukkan tidak terdaftar'), backgroundColor: Colors.red)
+          );
         } else if (e.code == 'wrong-password') {
           print('Wrong password provided for that user.');
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Container(color: Colors.red, child: Text('password salah')), backgroundColor: Colors.red, ),
+          );
         }
       }
+      setState(() {
+        isLoading = false;
+      });
     }
   }
   

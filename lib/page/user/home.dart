@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:projek_pbm/page/user/carirs.dart';
 import 'package:projek_pbm/page/user/changepw.dart';
 import 'package:projek_pbm/page/user/dashboard.dart';
 import 'package:projek_pbm/page/user/login.dart';
@@ -6,26 +7,44 @@ import 'package:projek_pbm/page/user/pwdetail.dart';
 import 'package:projek_pbm/page/user/signup.dart';
 import 'package:projek_pbm/page/user/profile.dart';
 
+
+int selectednavbar = 0;
+
 class HomeUser extends StatefulWidget {
-  const HomeUser({ super.key });
+  const HomeUser({ super.key, required String name, required String emailp, required String nik, required String alamat, required String tanggalL, required String tempatL, required String gender, required String goldar, required String age, required String uid, required String imagep});
   @override
   State<HomeUser> createState() => _HomeUserState();
 }
 
+// String userName = name;
 
 
 class _HomeUserState extends State<HomeUser>{
 
-  int _selectedNavbar = 0;
+  
   final tabs = [
-    DashboardUser(),
-    SignupPage(role: role,),
-    ProfileUser()
+    DashboardUser( uname : name, uuid: uidp, snb: selectednavbar),
+    CariRs( uname : name, uidd : uidp, ),
+    ProfileUser( 
+      uidd : uidp,
+      uname: name, 
+      emailP : emailp,
+      agep: age, 
+      alamatp: alamat, 
+      genderp: gender, 
+      goldarp: goldar, 
+      nikp: nik, 
+      tanggalLp: tanggalL, 
+      tempatLp: tempatL,
+      imagepr: imagep,
+      selnav: selectednavbar,
+    )
   ];
+  
 
   void _changeSelectedNavBar(int index) {
     setState(() {
-      _selectedNavbar = index;
+      selectednavbar = index;
     });
   }
 
@@ -36,7 +55,7 @@ class _HomeUserState extends State<HomeUser>{
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 246, 241, 233),
 
-      body : tabs[_selectedNavbar],
+      body : tabs[selectednavbar],
 
       bottomNavigationBar: 
         Padding(padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
@@ -73,7 +92,7 @@ class _HomeUserState extends State<HomeUser>{
                             label: 'Akun',
                           ),
                         ],
-                        currentIndex: _selectedNavbar,
+                        currentIndex: selectednavbar,
                         selectedFontSize: screenHeight*0.016,
                         unselectedFontSize: screenHeight*0.014,
                         selectedItemColor: Color.fromARGB(255, 198, 255, 154),

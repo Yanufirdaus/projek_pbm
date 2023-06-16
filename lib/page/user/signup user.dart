@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:projek_pbm/page/user/login.dart';
 import 'package:projek_pbm/page/user/signup.dart';
+import 'package:email_validator/email_validator.dart';
 
 
 class SignupUser extends StatefulWidget {
@@ -74,13 +75,13 @@ class _SignupUserState extends State<SignupUser> {
               child: 
                 TextFormField(
                   validator: (value) {
-                    if (confirmpassController.text.length < 6) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('isi nama email')),
-                      );
+                    if (EmailValidator.validate(value!)) {
                       return null;
-                      // return "Password minimal 6 karakter";
                     } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('email tidak valid'), backgroundColor: Colors.red),
+                      );
+                      return "email tidak valid";
                       
                     }
                   },
@@ -115,7 +116,7 @@ class _SignupUserState extends State<SignupUser> {
                 validator: (value) {
                     if (confirmpassController.text.length < 6) {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('isi nama pengguna')),
+                        SnackBar(content: Text('isi nama pengguna'), backgroundColor: Colors.red),
                       );
                       return null;
                       // return "Password minimal 6 karakter";
@@ -152,7 +153,7 @@ class _SignupUserState extends State<SignupUser> {
                   validator: (value) {
                     if (confirmpassController.text.length < 6) {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Password minimal 6 karakter')),
+                        SnackBar(content: Text('Password minimal 6 karakter'), backgroundColor: Colors.red),
                       );
                       return null;
                       // return "Password minimal 6 karakter";
@@ -187,7 +188,7 @@ class _SignupUserState extends State<SignupUser> {
                 validator: (value) {
                   if (confirmpassController.text != passwordController.text) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Password tidak sama')),
+                        SnackBar(content: Text('Password tidak sama'), backgroundColor: Colors.red),
                     );
                     return null;
                   } 
@@ -239,7 +240,7 @@ class _SignupUserState extends State<SignupUser> {
                         signUp(
                             emailController.text,
                             passwordController.text, role, 
-                            name.text);
+                            name.text,"","","","","","","","https://firebasestorage.googleapis.com/v0/b/nyoba-fbs.appspot.com/o/profileawal.jpg?alt=media&token=69b13ecf-ceca-4976-b032-a88d2d13d43a&_gl=1*zg5bdl*_ga*MTI0NjkzODE4My4xNjg0MzI4NTk1*_ga_CW55HF8NVT*MTY4NTc4NDgxMS4zMy4xLjE2ODU3ODY1MTcuMC4wLjA.");
                     },
                     child: Text("Register", style:TextStyle(color: Color.fromARGB(255, 60, 98, 85), fontWeight: FontWeight.w900))
                   ),
@@ -276,18 +277,18 @@ class _SignupUserState extends State<SignupUser> {
     );
   }
 
-  void signUp(String email, String password, String role, String names) async {
+  void signUp(String email, String password, String role, String names, String nik, String alamat, String tempatL, String tanggalL, String gender, String goldar,  String usia, String ProfileImage) async {
     CircularProgressIndicator();
     if (_formkey.currentState!.validate()) {
-      if (emailController == null || name == null || passwordController == null || confirmpassController == null){
+      if (emailController.text == '' || name.text == "" || passwordController.text == "" || confirmpassController.text == ""){
         ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('Isi dengan lengkap terbelih dahulu'))
+                SnackBar(content: Text('Isi dengan lengkap terbelih dahulu'), backgroundColor: Colors.red)
             );
             return null;
       }
       else if (passwordController.text != confirmpassController.text){
         ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('Password tidak sama'))
+                SnackBar(content: Text('Password tidak sama'), backgroundColor: Colors.red)
             );
             return null;
       }
@@ -295,17 +296,17 @@ class _SignupUserState extends State<SignupUser> {
         (
           await _auth
             .createUserWithEmailAndPassword(email: email, password: password)
-            .then((value) => {postDetailsToFirestore(email, role, names)})
+            .then((value) => {postDetailsToFirestore(email, role, names, nik, alamat, tempatL, tanggalL, gender, goldar, usia, ProfileImage)})
         );
       }
     }
   }
 
-  postDetailsToFirestore(String email, String rool, String names) async {
-    FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+  postDetailsToFirestore(String email, String rool, String names, String nik, String alamat, String tempatL, String tanggalL, String gender, String goldar,  String usia, String ProfileImage) async { 
+    
     var user = _auth.currentUser;
     CollectionReference ref = FirebaseFirestore.instance.collection('user');
-    ref.doc(user!.uid).set({'email': emailController.text, 'role': role, 'names' : name.text});
+    ref.doc(user!.uid).set({'email': emailController.text, 'role': role, 'names' : name.text, 'nik': "", 'alamat': "", 'tempatL': "", 'tanggalL': "", 'gender': "", 'goldar': "", 'usia': "", 'ProfileImage': "https://firebasestorage.googleapis.com/v0/b/nyoba-fbs.appspot.com/o/profileawal.jpg?alt=media&token=69b13ecf-ceca-4976-b032-a88d2d13d43a&_gl=1*zg5bdl*_ga*MTI0NjkzODE4My4xNjg0MzI4NTk1*_ga_CW55HF8NVT*MTY4NTc4NDgxMS4zMy4xLjE2ODU3ODY1MTcuMC4wLjA."});
     Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (context) => LoginPage()));
   }

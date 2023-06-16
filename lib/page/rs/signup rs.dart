@@ -1,10 +1,15 @@
+import 'dart:ffi';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:projek_pbm/page/rs/identrs.dart';
 import 'package:projek_pbm/page/user/login.dart';
 import 'package:projek_pbm/page/user/signup.dart';
 
+String rsid = '';
 
 class SignupRs extends StatefulWidget {
   const SignupRs({ super.key, required String role });
@@ -73,14 +78,25 @@ class _SignupRsState extends State<SignupRs> {
               height: screenHeight * 0.08,
               child: 
                 TextFormField(
+                  // validator: (value) {
+                  //   if (confirmpassController.text.length < 6) {
+                  //     ScaffoldMessenger.of(context).showSnackBar(
+                  //       SnackBar(content: Text('isi nama email')),
+                  //     );
+                  //     return null;
+                  //     // return "Password minimal 6 karakter";
+                  //   } else {
+                      
+                  //   }
+                  // },
                   validator: (value) {
-                    if (confirmpassController.text.length < 6) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('isi nama email')),
-                      );
+                    if (EmailValidator.validate(value!)) {
                       return null;
-                      // return "Password minimal 6 karakter";
                     } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('email tidak valid'), backgroundColor: Colors.red),
+                      );
+                      return "email tidak valid";
                       
                     }
                   },
@@ -239,7 +255,7 @@ class _SignupRsState extends State<SignupRs> {
                         signUp(
                             emailController.text,
                             passwordController.text, role, 
-                            name.text);
+                            name.text,"https://firebasestorage.googleapis.com/v0/b/nyoba-fbs.appspot.com/o/profileawal.jpg?alt=media&token=69b13ecf-ceca-4976-b032-a88d2d13d43a&_gl=1*zg5bdl*_ga*MTI0NjkzODE4My4xNjg0MzI4NTk1*_ga_CW55HF8NVT*MTY4NTc4NDgxMS4zMy4xLjE2ODU3ODY1MTcuMC4wLjA.",{},{},{},GeoPoint(0,0),"",false,false,false,"");
                     },
                     child: Text("Register", style:TextStyle(color: Color.fromARGB(255, 60, 98, 85), fontWeight: FontWeight.w900))
                   ),
@@ -276,7 +292,7 @@ class _SignupRsState extends State<SignupRs> {
     );
   }
 
-  void signUp(String email, String password, String role, String names) async {
+  void signUp(String email, String password, String role, String names, String gambar, Map<String, dynamic> jamBuka, Map<String, dynamic>jamTutup, Map<String, dynamic> layanan, GeoPoint lokasi, String notelp, bool status, bool igd, bool ugd, String alamatrs) async {
     CircularProgressIndicator();
     if (_formkey.currentState!.validate()) {
       if (emailController == null || name == null || passwordController == null || confirmpassController == null){
@@ -295,19 +311,20 @@ class _SignupRsState extends State<SignupRs> {
         (
           await _auth
             .createUserWithEmailAndPassword(email: email, password: password)
-            .then((value) => {postDetailsToFirestore(email, role, names)})
+            .then((value) => {postDetailsToFirestore(email, role, names, gambar, jamBuka, jamTutup, layanan, lokasi, notelp, status, igd, ugd, alamatrs)})
         );
       }
     }
   }
 
-  postDetailsToFirestore(String email, String rool, String names) async {
+  postDetailsToFirestore(String email, String rool, String names, String gambar, Map<String, dynamic> jamBuka, Map<String, dynamic>jamTutup, Map<String, dynamic> layanan, GeoPoint lokasi, String notelp, bool status, bool igd, bool ugd, String alamatrs) async {
     FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
     var user = _auth.currentUser;
     CollectionReference ref = FirebaseFirestore.instance.collection('user');
-    ref.doc(user!.uid).set({'email': emailController.text, 'role': role, 'names' : name.text});
+    rsid = ref.doc(user!.uid).id;
+    ref.doc(user!.uid).set({'email': emailController.text, 'role': role, 'names': name.text, 'gambar': 'https://firebasestorage.googleapis.com/v0/b/nyoba-fbs.appspot.com/o/profileawal.jpg?alt=media&token=69b13ecf-ceca-4976-b032-a88d2d13d43a&_gl=1*zg5bdl*_ga*MTI0NjkzODE4My4xNjg0MzI4NTk1*_ga_CW55HF8NVT*MTY4NTc4NDgxMS4zMy4xLjE2ODU3ODY1MTcuMC4wLjA.', 'jam_buka': {}, 'jam_tutup': {}, 'layanan': {}, 'lokasi': GeoPoint(0,0), 'no_telp': '', 'status': false, 'igd': false, 'ugd': false, 'alamat':''});
     Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => LoginPage()));
+        context, MaterialPageRoute(builder: (context) => identRs(rsid: rsid)));
   }
 }
 

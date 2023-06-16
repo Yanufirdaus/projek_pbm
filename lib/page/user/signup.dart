@@ -10,7 +10,7 @@ String role = '';
 
 
 class SignupPage extends StatefulWidget {
-  const SignupPage({ super.key, required String role });
+  const SignupPage({ super.key, required String role});
 
   @override
   State<SignupPage> createState() => _SignupPageState();
@@ -18,8 +18,6 @@ class SignupPage extends StatefulWidget {
 
 String dropdownValue = 'User';
 class _SignupPageState extends State<SignupPage> {
-  
-  // final TextEditingController mobile = new TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -116,9 +114,6 @@ class _SignupPageState extends State<SignupPage> {
                       )
                     ),
                     onPressed:(){
-                        // ScaffoldMessenger.of(context).showSnackBar(
-                        //       SnackBar(content: Text('menuju halaman signup'))
-                        //   );
                         if (dropdownValue == "User")[
                           role = dropdownValue,
                           Navigator.push(
