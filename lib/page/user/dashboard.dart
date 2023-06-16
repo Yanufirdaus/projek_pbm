@@ -27,17 +27,35 @@ class DashboardUser extends StatefulWidget {
 
 class _DashboardUserState extends State<DashboardUser> {
   final articleList = FirebaseFirestore.instance.collection('article').snapshots();
+<<<<<<< HEAD
   ApiServices client =  ApiServices();
   late Future<String> usernameFuture;
+=======
+
+  late List<Album> listAlbum = []; 
+
+  Repository repository = Repository();
+>>>>>>> 63f747725b4a9a4471e23424638078bb90ec7b7b
 
   @override
   void initState() {
     super.initState();
+<<<<<<< HEAD
     usernameFuture = fetchUsername();
   }
 
   Future<String> fetchUsername() async {
     User? user = FirebaseAuth.instance.currentUser;
+=======
+    getData();
+    Timer.periodic(Duration(seconds: 30), (Timer t) => getData());
+  }
+
+  Future<void> getData() async {
+    listAlbum = await repository.getData();
+    setState(() {});
+  }
+>>>>>>> 63f747725b4a9a4471e23424638078bb90ec7b7b
 
     if (user != null) {
       var snapshot = await FirebaseFirestore.instance
@@ -436,6 +454,9 @@ class _DashboardUserState extends State<DashboardUser> {
     );
   }
 }
+<<<<<<< HEAD
 
 class CirularProgressIndiator {
 }
+=======
+>>>>>>> 63f747725b4a9a4471e23424638078bb90ec7b7b
